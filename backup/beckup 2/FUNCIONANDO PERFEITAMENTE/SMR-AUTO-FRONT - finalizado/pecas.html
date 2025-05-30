@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peças - SMR AUTO</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/pecas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Peças</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="funcionarios.html">Funcionários</a></li>
+                <li><a href="ordens-servico.html">Ordens de Serviço</a></li>
+                <li><a href="pecas.html" class="active">Peças</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Buscar por nome...">
+            <button id="search-button">Buscar</button>
+            <button id="estoque-baixo-button" class="btn-secondary">Estoque Baixo</button>
+            <button id="new-peca-button" class="btn-primary">Nova Peça</button>
+        </div>
+
+        <div id="peca-list">
+            <!-- As peças serão carregadas aqui via JavaScript -->
+        </div>
+
+        <!-- Modal para Nova Peça -->
+        <div id="peca-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Nova Peça</h2>
+                <form id="peca-form">
+                    <div class="form-group">
+                        <label for="nmPeca">Nome*</label>
+                        <input type="text" id="nmPeca" name="nmPeca" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qtdEstoque">Quantidade em Estoque*</label>
+                        <input type="number" id="qtdEstoque" name="qtdEstoque" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vlPeca">Valor Unitário*</label>
+                        <input type="number" id="vlPeca" name="vlPeca" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Salvar</button>
+                        <button type="button" id="cancel-button" class="btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/pecas.js"></script>
+    
+    <!-- Script adicional para garantir que o modal funcione corretamente -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modal Nova Peça
+            const newPecaButton = document.getElementById('new-peca-button');
+            const pecaModal = document.getElementById('peca-modal');
+            const closeButton = document.querySelector('#peca-modal .close-button');
+            const cancelButton = document.getElementById('cancel-button');
+            
+            // Abrir modal
+            if(newPecaButton) {
+                newPecaButton.addEventListener('click', function() {
+                    if(pecaModal) {
+                        pecaModal.style.display = 'block';
+                        console.log("Modal aberto via script inline");
+                    } else {
+                        console.error("Modal não encontrado");
+                    }
+                });
+            } else {
+                console.error("Botão 'Nova Peça' não encontrado");
+            }
+            
+            // Fechar modal com o X
+            if(closeButton) {
+                closeButton.addEventListener('click', function() {
+                    pecaModal.style.display = 'none';
+                });
+            }
+            
+            // Fechar modal com o botão cancelar
+            if(cancelButton) {
+                cancelButton.addEventListener('click', function() {
+                    pecaModal.style.display = 'none';
+                });
+            }
+            
+            // Fechar modal clicando fora
+            window.addEventListener('click', function(event) {
+                if (event.target == pecaModal) {
+                    pecaModal.style.display = 'none';
+                }
+            });
+            
+            // Formulário
+            const pecaForm = document.getElementById('peca-form');
+            if(pecaForm) {
+                pecaForm.addEventListener('submit', function(e) {
+                    // Apenas para prevenção de erros, o peca.js cuidará do restante
+                    if (!window.salvarPeca) {
+                        e.preventDefault();
+                        console.error("Função salvarPeca não encontrada. Verificar o arquivo peca.js");
+                    }
+                });
+            }
+            
+            console.log("Script de backup para modais carregado");
+        });
+    </script>
+</body>
+</html>

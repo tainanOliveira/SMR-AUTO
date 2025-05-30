@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionários - SMR AUTO</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/funcionarios.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Funcionários</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="funcionarios.html" class="active">Funcionários</a></li>
+                <li><a href="ordens-servico.html">Ordens de Serviço</a></li>
+                <li><a href="pecas.html">Peças</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Buscar por nome, cargo ou CPF...">
+            <button id="search-button">Buscar</button>
+            <button id="new-funcionario-button" class="btn-primary">Novo Funcionário</button>
+        </div>
+
+        <div id="funcionario-list">
+            <!-- Os funcionários serão carregados aqui via JavaScript -->
+        </div>
+
+        <!-- Modal para Novo Funcionário -->
+        <div id="funcionario-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Novo Funcionário</h2>
+                <form id="funcionario-form">
+                    <div class="form-group">
+                        <label for="nmFuncionario">Nome*</label>
+                        <input type="text" id="nmFuncionario" name="nmFuncionario" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cargo">Cargo*</label>
+                        <input type="text" id="cargo" name="cargo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cpfFuncionario">CPF* (apenas números)</label>
+                        <input type="text" id="cpfFuncionario" name="cpfFuncionario" maxlength="11" pattern="\d{11}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefoneFuncionario">Telefone* (formato: (XX) XXXXX-XXXX)</label>
+                        <input type="text" id="telefoneFuncionario" name="telefoneFuncionario" placeholder="(XX) XXXXX-XXXX" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Salvar</button>
+                        <button type="button" id="cancel-button" class="btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/funcionario.js"></script>
+</body>
+</html>

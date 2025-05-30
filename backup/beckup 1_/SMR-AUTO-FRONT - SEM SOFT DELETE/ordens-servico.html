@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordens de Serviço - SMR AUTO</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/ordens.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Ordens de Serviço</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="funcionarios.html">Funcionários</a></li>
+                <li><a href="ordens-servico.html" class="active">Ordens de Serviço</a></li>
+                <li><a href="pecas.html">Peças</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Buscar por cliente ou CPF...">
+            <button id="search-button">Buscar</button>
+            <button id="new-order-button" class="btn-primary">Nova Ordem</button>
+        </div>
+
+        <div id="order-list">
+            <p id="no-orders-message">Nenhuma ordem encontrada</p>
+            <!-- As ordens serão carregadas aqui via JavaScript -->
+        </div>
+
+        <!-- Modal para Nova Ordem de Serviço -->
+        <div id="order-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Nova Ordem de Serviço</h2>
+                <form id="order-form">
+                    <div class="form-group">
+                        <label for="cliente">Cliente*</label>
+                        <select id="cliente" name="idCliente" required>
+                            <option value="">Selecione um cliente</option>
+                            <!-- Opções serão carregadas via JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="funcionario">Responsável*</label>
+                        <select id="funcionario" name="idFuncionario" required>
+                            <option value="">Selecione um funcionário</option>
+                            <!-- Opções serão carregadas via JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data">Data*</label>
+                        <input type="date" id="data" name="data" required value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status*</label>
+                        <select id="status" name="status" required>
+                            <option value="Aberta">Aberta</option>
+                            <option value="Em Andamento">Em Andamento</option>
+                            <option value="Concluída">Concluída</option>
+                            <option value="Cancelada">Cancelada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descricao">Descrição do Problema*</label>
+                        <textarea id="descricao" name="descricaoServico" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="veiculo">Veículo*</label>
+                        <input type="text" id="veiculo" name="veiculo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vlServico">Valor do Serviço*</label>
+                        <input type="number" id="vlServico" name="vlServico" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formaPagamento">Forma de Pagamento*</label>
+                        <select id="formaPagamento" name="formaPagamento" required>
+                            <option value="DINHEIRO">Dinheiro</option>
+                            <option value="PIX">PIX</option>
+                            <option value="CARTAO">Cartão</option>
+                        </select>
+                    </div>
+
+                    <h3>Peças Utilizadas</h3>
+                    <p class="info-text">Pelo menos 1 peça é necessária</p>
+
+                    <div id="pecas-container">
+                        <!-- Template para adicionar peças -->
+                        <div class="peca-item">
+                            <div class="form-group">
+                                <label for="peca-1">Peça*</label>
+                                <select id="peca-1" name="peca-1" class="peca-select" required>
+                                    <option value="">Selecione uma peça</option>
+                                    <!-- Opções serão carregadas via JavaScript -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="qtd-1">Quantidade*</label>
+                                <input type="number" id="qtd-1" name="qtd-1" min="1" value="1" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-peca-button">+ Adicionar outra peça</button>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Salvar</button>
+                        <button type="button" id="cancel-button" class="btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/ordem-servico.js"></script>
+</body>
+</html>

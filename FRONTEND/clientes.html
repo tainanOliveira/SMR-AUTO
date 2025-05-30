@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - SMR AUTO</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/clientes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Clientes</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="clientes.html" class="active">Clientes</a></li>
+                <li><a href="funcionarios.html">Funcionários</a></li>
+                <li><a href="ordens-servico.html">Ordens de Serviço</a></li>
+                <li><a href="pecas.html">Peças</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Buscar por nome ou CPF...">
+            <button id="search-button">Buscar</button>
+            <button id="new-client-button" class="btn-primary">Novo Cliente</button>
+        </div>
+
+        <div id="client-list">
+            <!-- Os clientes serão carregados aqui via JavaScript -->
+        </div>
+
+        <!-- Modal para Novo Cliente -->
+        <div id="client-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Novo Cliente</h2>
+                <form id="client-form">
+                    <div class="form-group">
+                        <label for="nmCliente">Nome*</label>
+                        <input type="text" id="nmCliente" name="nmCliente" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cpfCliente">CPF* (apenas números)</label>
+                        <input type="text" id="cpfCliente" name="cpfCliente" maxlength="11" pattern="\d{11}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefoneCliente">Telefone* (formato: (XX) XXXXX-XXXX)</label>
+                        <input type="text" id="telefoneCliente" name="telefoneCliente" placeholder="(XX) XXXXX-XXXX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rua">Rua*</label>
+                        <input type="text" id="rua" name="rua" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cidade">Cidade*</label>
+                        <input type="text" id="cidade" name="cidade" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estado">Estado*</label>
+                        <input type="text" id="estado" name="estado" maxlength="2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cep">CEP* (apenas números)</label>
+                        <input type="text" id="cep" name="cep" maxlength="8" pattern="\d{8}" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Salvar</button>
+                        <button type="button" id="cancel-button" class="btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/cliente.js"></script>
+</body>
+</html>

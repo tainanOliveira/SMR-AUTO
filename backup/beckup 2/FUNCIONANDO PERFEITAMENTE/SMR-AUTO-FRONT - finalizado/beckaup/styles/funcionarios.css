@@ -1,0 +1,97 @@
+#funcionario-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.funcionario-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.funcionario-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.funcionario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.funcionario-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.funcionario-cargo {
+    font-weight: 500;
+    color: #db5a12;
+    padding: 0.3rem 0.8rem;
+    background-color: #fff7f0;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.funcionario-info {
+    margin-bottom: 1rem;
+}
+
+.info-item {
+    margin-bottom: 0.5rem;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #666;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.funcionario-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.action-button {
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: #f0f0f0;
+}
+
+.edit-button {
+    color: #1890ff;
+}
+
+.delete-button {
+    color: #ff4d4f;
+}
+
+.view-orders-button {
+    color: #52c41a;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #funcionario-list {
+        grid-template-columns: 1fr;
+    }
+}

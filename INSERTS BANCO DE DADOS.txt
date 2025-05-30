@@ -1,0 +1,144 @@
+select * from tbcliente;
+select * from tbfuncionario;
+select * from tbordemservico;
+select * from tbpeca;
+
+
+-- Script SQL para inserir dados iniciais no banco de dados
+-- Adicionado o campo valorFinal e status
+
+-- Inserir clientes
+INSERT INTO tbCliente (nmCliente, rua, cidade, estado, cep, telefoneCliente, cpfCliente) VALUES 
+('João Silva', 'Av. Paulista, 1000', 'São Paulo', 'SP', '01310100', '(11) 98765-4321', '12345678901'),
+('Maria Oliveira', 'Rua Augusta, 500', 'São Paulo', 'SP', '01305000', '(11) 97654-3210', '23456789012'),
+('Carlos Santos', 'Rua Oscar Freire, 200', 'São Paulo', 'SP', '01426000', '(11) 96543-2109', '34567890123'),
+('Ana Ferreira', 'Alameda Santos, 800', 'São Paulo', 'SP', '01419000', '(11) 95432-1098', '45678901234'),
+('Roberto Almeida', 'Rua Haddock Lobo, 350', 'São Paulo', 'SP', '01414000', '(11) 94321-0987', '56789012345');
+
+-- Inserir funcionários
+INSERT INTO tbFuncionario (nmFuncionario, cargo, telefoneFuncionario, cpfFuncionario) VALUES 
+('Pedro Souza', 'Mecânico', '(11) 93210-9876', '67890123456'),
+('Luiza Costa', 'Recepcionista', '(11) 92109-8765', '78901234567'),
+('Bruno Martins', 'Mecânico Especialista', '(11) 91098-7654', '89012345678'),
+('Juliana Ribeiro', 'Gerente', '(11) 90987-6543', '90123456789'),
+('Ricardo Gomes', 'Eletricista', '(11) 89876-5432', '01234567890');
+
+-- Inserir peças
+INSERT INTO tbPeca (nmPeca, qtdEstoque, vlPeca) VALUES 
+('Filtro de Óleo', 15, 25.90),
+('Filtro de Ar', 12, 35.50),
+('Pastilha de Freio', 8, 89.90),
+('Vela de Ignição', 20, 15.75),
+('Óleo de Motor', 25, 28.90),
+('Correia Dentada', 10, 45.90),
+('Amortecedor', 6, 159.90),
+('Disco de Freio', 8, 129.90),
+('Fluido de Freio DOT 4', 15, 32.50),
+('Junta do Cabeçote', 4, 89.75),
+('Sensor de Oxigênio', 6, 175.90),
+('Kit Embreagem', 1, 249.90),
+('Bateria 60Ah', 5, 279.90);
+
+-- Inserir ordens de serviço com valorFinal e status
+-- Ordem 1 - DINHEIRO - Concluída
+INSERT INTO tbOrdemServico (idCliente, dataInicio, descricaoServico, idFuncionario, veiculo, vlServico, formaPagamento, desconto, valorFinal, status) 
+VALUES (1, NOW(), 'Troca de óleo e filtros', 1, 'Fiat Uno 2019 - Branco - ABC1234', 150.00, 'DINHEIRO', 0, 0, 'Concluída');
+
+SET @ordem1 = LAST_INSERT_ID();
+
+-- Peças da Ordem 1
+INSERT INTO tbPecaServico (idPeca, idServico, qtdPecas, valorTotal) VALUES 
+(1, @ordem1, 1, 25.90),  -- Filtro de Óleo
+(5, @ordem1, 3, 86.70);  -- Óleo de Motor (3 unidades)
+
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 1 WHERE idPeca = 1;
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 3 WHERE idPeca = 5;
+
+-- Calcular o valor total e aplicar desconto de 5%
+SET @valorTotalPecas = (SELECT SUM(valorTotal) FROM tbPecaServico WHERE idServico = @ordem1);
+SET @valorTotal = @valorTotalPecas + 150.00;
+SET @desconto = @valorTotal * 0.05; -- Desconto sobre o valor total (peças + mão de obra)
+SET @valorFinal = @valorTotal - @desconto;
+UPDATE tbOrdemServico SET desconto = @desconto, valorFinal = @valorFinal WHERE idServico = @ordem1;
+
+-- Ordem 2 - PIX - Em Andamento
+INSERT INTO tbOrdemServico (idCliente, dataInicio, descricaoServico, idFuncionario, veiculo, vlServico, formaPagamento, desconto, valorFinal, status) 
+VALUES (2, NOW(), 'Revisão completa de 30.000 km', 3, 'Honda Civic 2020 - Prata - DEF5678', 300.00, 'PIX', 0, 0, 'Em Andamento');
+
+SET @ordem2 = LAST_INSERT_ID();
+
+INSERT INTO tbPecaServico (idPeca, idServico, qtdPecas, valorTotal) VALUES 
+(1, @ordem2, 1, 25.90),   -- Filtro de Óleo
+(2, @ordem2, 1, 35.50),   -- Filtro de Ar
+(4, @ordem2, 4, 63.00),   -- Velas de Ignição (4 unidades)
+(5, @ordem2, 4, 115.60);  -- Óleo de Motor (4 unidades)
+
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 1 WHERE idPeca = 1;
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 1 WHERE idPeca = 2;
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 4 WHERE idPeca = 4;
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 4 WHERE idPeca = 5;
+
+-- Calcular o valor total e aplicar desconto de 5%
+SET @valorTotalPecas = (SELECT SUM(valorTotal) FROM tbPecaServico WHERE idServico = @ordem2);
+SET @valorTotal = @valorTotalPecas + 300.00;
+SET @desconto = @valorTotal * 0.05; -- Desconto sobre o valor total (peças + mão de obra)
+SET @valorFinal = @valorTotal - @desconto;
+UPDATE tbOrdemServico SET desconto = @desconto, valorFinal = @valorFinal WHERE idServico = @ordem2;
+
+-- Ordem 3 - CARTAO (sem desconto) - Aberta
+INSERT INTO tbOrdemServico (idCliente, dataInicio, descricaoServico, idFuncionario, veiculo, vlServico, formaPagamento, desconto, valorFinal, status) 
+VALUES (3, NOW(), 'Problema no sistema elétrico, luzes não acendem', 5, 'Volkswagen Gol 2018 - Vermelho - GHI9012', 200.00, 'CARTAO', 0.0, 0.0, 'Aberta');
+
+SET @ordem3 = LAST_INSERT_ID();
+
+INSERT INTO tbPecaServico (idPeca, idServico, qtdPecas, valorTotal) VALUES 
+(13, @ordem3, 1, 279.90),  -- Bateria 60Ah
+(4, @ordem3, 2, 31.50);   -- Velas de Ignição (2 unidades)
+
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 1 WHERE idPeca = 13;
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 2 WHERE idPeca = 4;
+
+-- Calcular o valor final (sem desconto)
+SET @valorTotalPecas = (SELECT SUM(valorTotal) FROM tbPecaServico WHERE idServico = @ordem3);
+SET @valorFinal = @valorTotalPecas + 200.00;
+UPDATE tbOrdemServico SET valorFinal = @valorFinal WHERE idServico = @ordem3;
+
+-- Ordem 4 - DINHEIRO - Em Andamento
+INSERT INTO tbOrdemServico (idCliente, dataInicio, descricaoServico, idFuncionario, veiculo, vlServico, formaPagamento, desconto, valorFinal, status) 
+VALUES (4, NOW(), 'Barulho na suspensão dianteira', 1, 'Toyota Corolla 2021 - Preto - JKL3456', 250.00, 'DINHEIRO', 0, 0, 'Em Andamento');
+
+SET @ordem4 = LAST_INSERT_ID();
+
+INSERT INTO tbPecaServico (idPeca, idServico, qtdPecas, valorTotal) VALUES 
+(7, @ordem4, 2, 319.80),  -- Amortecedores (2 unidades)
+(6, @ordem4, 1, 45.90);   -- Correia Dentada
+
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 2 WHERE idPeca = 7;
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 1 WHERE idPeca = 6;
+
+-- Calcular o valor total e aplicar desconto de 5%
+SET @valorTotalPecas = (SELECT SUM(valorTotal) FROM tbPecaServico WHERE idServico = @ordem4);
+SET @valorTotal = @valorTotalPecas + 250.00;
+SET @desconto = @valorTotal * 0.05; -- Desconto sobre o valor total (peças + mão de obra)
+SET @valorFinal = @valorTotal - @desconto;
+UPDATE tbOrdemServico SET desconto = @desconto, valorFinal = @valorFinal WHERE idServico = @ordem4;
+
+-- Ordem 5 - PIX - Cancelada
+INSERT INTO tbOrdemServico (idCliente, dataInicio, descricaoServico, idFuncionario, veiculo, vlServico, formaPagamento, desconto, valorFinal, status) 
+VALUES (5, NOW(), 'Freios com baixa eficiência', 3, 'Hyundai HB20 2020 - Azul - MNO7890', 180.00, 'PIX', 0, 0, 'Cancelada');
+
+SET @ordem5 = LAST_INSERT_ID();
+
+INSERT INTO tbPecaServico (idPeca, idServico, qtdPecas, valorTotal) VALUES 
+(3, @ordem5, 2, 179.80),  -- Pastilhas de Freio (2 unidades, para os dois lados)
+(5, @ordem5, 1, 28.90);   -- Óleo de Motor
+
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 2 WHERE idPeca = 3;
+UPDATE tbPeca SET qtdEstoque = qtdEstoque - 1 WHERE idPeca = 5;
+
+-- Calcular o valor total e aplicar desconto de 5% para Ordem 5
+SET @valorTotalPecas = (SELECT SUM(valorTotal) FROM tbPecaServico WHERE idServico = @ordem5);
+SET @valorTotal = @valorTotalPecas + 180.00;
+SET @desconto = @valorTotal * 0.05; -- Desconto sobre o valor total (peças + mão de obra)
+SET @valorFinal = @valorTotal - @desconto;
+UPDATE tbOrdemServico SET desconto = @desconto, valorFinal = @valorFinal WHERE idServico = @ordem5;

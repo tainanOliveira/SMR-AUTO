@@ -1,0 +1,133 @@
+#peca-list {
+    margin-top: 2rem;
+}
+
+.peca-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.peca-table th, .peca-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.peca-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.peca-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.peca-name {
+    font-weight: 500;
+}
+
+.peca-price {
+    font-weight: 700;
+    color: #db5a12;
+}
+
+.stock-high {
+    color: #52c41a;
+    font-weight: 600;
+}
+
+.stock-medium {
+    color: #faad14;
+    font-weight: 600;
+}
+
+.stock-low {
+    color: #ff4d4f;
+    font-weight: 600;
+}
+
+.peca-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-button {
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: #f0f0f0;
+}
+
+.edit-button {
+    color: #1890ff;
+}
+
+.delete-button {
+    color: #ff4d4f;
+}
+
+.adjust-stock-button {
+    color: #52c41a;
+}
+
+/* Modal de ajuste de estoque */
+#stock-modal .modal-content {
+    max-width: 400px;
+}
+
+.stock-adjustment {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stock-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.stock-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.stock-control-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.stock-decrement {
+    background-color: #fff1f0;
+    color: #ff4d4f;
+}
+
+.stock-increment {
+    background-color: #f6ffed;
+    color: #52c41a;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .peca-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
